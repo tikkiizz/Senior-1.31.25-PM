@@ -7,15 +7,33 @@
 //
 
 import UIKit
-
+import Parse
+import Bolts
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, ESTBeaconManagerDelegate {
 
     var window: UIWindow?
-
+    let beaconNotificationsManager = BeaconNotificationsManager()
+    
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        //ESTConfig.setupAppID("tikkiizz-hotmail-com-s-not-mfc", andAppToken: "955fdfa0974cac376345ca11531950dd")
+        ESTConfig.setupAppID("senior-imv", andAppToken: "3b393148513ebe9ce59c7a13033e254c")
+        self.beaconNotificationsManager.enableNotificationsForBeaconID(
+            BeaconID(UUIDString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D", major: 49216, minor: 4376),
+            enterMessage: "Hello, world.",
+            exitMessage: "Goodbye, world." // NOTE: "exit" event has a built-in delay of 30 seconds, to make sure that the user has really exited the beacon's range. The delay is imposed by iOS and is non-adjustable.
+        )
+
+        Parse.enableLocalDatastore()
+        
+        // Initialize Parse.
+        Parse.setApplicationId("fGTU9xvUuaXtqIW7vekR8AzfbabgepPQY2Kk1uKZ",
+            clientKey: "2FH65XD7RyeRj2KBSVwlZ4t0py9yYI9tFRUhaLff")
+        
+        // [Optional] Track statistics around application opens.
+        PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
         return true
     }
 
